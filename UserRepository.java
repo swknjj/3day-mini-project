@@ -4,6 +4,8 @@ import java.util.*;
 
 public class UserRepository {
 	private static UserRepository userRepository = new UserRepository();
+	String adminI = "abcd";
+	String adminP = "1234";
 
 	private UserRepository() {
 	}
@@ -51,5 +53,11 @@ public class UserRepository {
 	public boolean updatePassword(UserDTO userDTO, String updatePassword) {
 		userDTO.setPw(updatePassword);
 		return true;
+	}
+	public boolean admin(String adminId , String adminPassword) {
+		if(adminI.equals(adminId) && adminP.equals(adminPassword)) {
+			return true;
+		}
+		return false;
 	}
 }

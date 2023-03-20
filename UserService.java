@@ -89,4 +89,17 @@ public class UserService {
 		loginPw = "belogin";
 		return true;
 	}
+	public boolean admin() {
+		System.out.print("관리자 계정 ID");
+		String adminId = sc.next();
+		System.out.println("관리자 계정 Password");
+		String adminPassword = sc.next();
+		if(userRepository.admin(adminId,adminPassword)) {
+			System.out.println("관리자 계정 로그인 완료");
+			return true;
+		}else {
+			System.out.println("Access Denied");
+			return false;
+		}
+	}
 }

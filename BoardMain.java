@@ -11,18 +11,21 @@ public class BoardMain {
 		boolean loginOk = false;
 		String loginid = null;
 		String loginpw = null;
+		boolean admin = false;
 
 		while (true) {
 			System.out.println("==============================게시판==============================");
 			if (!loginOk) {
-				System.out.println("1.회원가입 2.Login 3.ID 찾기 4.Password 찾기 5.비회원으로 로그인하기 0.프로그램 종료");
+				System.out.println("1.회원가입 2.Login 3.ID 찾기 4.Password 찾기 5.비회원으로 로그인하기 6.관리자 계정으로 접속 0.프로그램 종료");
 				System.out.println("logoff 상태");
 			} else {
 				System.out.println("1. ? 2. ? 3. ? 4. ? 5. ? 0. 로그아웃");
-				if(loginid == "belogin") {
-					System.out.println("비로그인으로 로그인중");
+				if(admin) {
+					System.out.println("관리자계정으로 접속중");
+				}else if(loginid == "belogin") {
+					System.out.println("비회원으로 접속중");
 			}else {
-				System.out.println("현재 로그인 ID :"+loginid+"\n현재 Password :"+loginpw);
+				System.out.println("현재 Login ID :"+loginid+"\n현재 Password :"+loginpw);
 			}
 			}
 			System.out.print("Menu 선택>");
@@ -44,11 +47,17 @@ public class BoardMain {
 				if(userService.belogin()) {
 					loginOk = true;
 				}
+			} else if (menu == 6) {
+				if(userService.admin()) {
+					loginOk = true;
+					admin= true;
+				}
 			} else if (menu == 0) {
 				if(!loginOk) {
 				break;
 				}else {
 					loginOk = false;
+					admin = false;
 				}
 			} else {
 				System.out.println("다시입력");
