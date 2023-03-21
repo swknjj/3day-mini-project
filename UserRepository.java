@@ -60,4 +60,16 @@ public class UserRepository {
 		}
 		return false;
 	}
+	public Map<String, UserDTO> findAll() {
+		return uMap;
+	}
+	public boolean delete(String deleteUser) {
+		for(String key : uMap.keySet()) {
+			if(deleteUser.equals(uMap.get(key).getBno())) {
+				uMap.remove(key);
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -18,8 +18,7 @@ public class UserDTO {
 
 	@Override
 	public String toString() {
-		return "UserDTO [id=" + id + ", pw=" + pw + ", NickName=" + nickName + ", bno=" + bno + ", nickName=" + nickName
-				+ ", point=" + point + ", newDate=" + newDate + "]";
+		return bno+"\t"+id+"\t"+pw+"\t"+name+"\t"+nickName+"\t"+newDate;
 	}
 
 	public String getRole() {

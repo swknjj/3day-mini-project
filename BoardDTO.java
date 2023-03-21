@@ -60,4 +60,8 @@ public class BoardDTO {
 		return cnt;
 	}
 
+	public void setCnt(long cnt) {
+		this.cnt = cnt;
+	}
+
 }
