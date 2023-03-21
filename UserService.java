@@ -13,6 +13,9 @@ public class UserService {
 	UserRepository userRepository = UserRepository.getInstance();
 	String loginId = null;
 	String loginPw = null;
+	String loginNickName = null;
+	UserDTO userDTO = new UserDTO();
+	
 	
 	
 	public void save() { // 회원가입
@@ -23,9 +26,12 @@ public class UserService {
 		userDTO.setPw(sc.next());
 		System.out.print("회원가입할 Name");
 		userDTO.setName(sc.next());
+		System.out.print("회원가입할 NickName");
+		userDTO.setNickName(sc.next());
 		if(userRepository.save(userDTO)) {
 			System.out.println("회원가입 성공");
 			System.out.println(userDTO.getName()+"님 회원가입을 축하합니다");
+			System.out.println(userDTO.toString());
 		}else {
 			System.out.println("회원가입오류");
 		}
@@ -36,7 +42,6 @@ public class UserService {
 		String loginID = sc.next();
 		System.out.print("Login 할 Password 입력");
 		String loginPassword = sc.next();
-		UserDTO userDTO = new UserDTO();
 		userDTO = userRepository.findByUserDTO(loginID, loginPassword);
 		if(userDTO == null) {
 			System.out.println("Access Denied");
@@ -44,8 +49,9 @@ public class UserService {
 		}else {
 			loginId = loginID;
 			loginPw = loginPassword;
+			loginNickName = userDTO.getNickName();
+			
 			System.out.println("login 성공");
-			System.out.println(userDTO.getName()+"님 반갑습니다");
 			return userDTO;
 		}
 		
@@ -53,7 +59,6 @@ public class UserService {
 	public void findById() {
 		System.out.print("찾으시는 ID에 해당하는 Name 입력");
 		String findName = sc.next();
-		UserDTO userDTO = new UserDTO();
 		userDTO = userRepository.findByUserId(findName);
 		if(userDTO == null) {
 			System.out.println("Access Denied");
@@ -68,7 +73,6 @@ public class UserService {
 		String findId = sc.next();
 		System.out.print("Name :");
 		String findName = sc.next();
-		UserDTO userDTO = new UserDTO();
 		userDTO = userRepository.findByUserPassword(findId,findName);
 		if(userDTO == null) {
 			System.out.println("Access Denied");
@@ -84,15 +88,20 @@ public class UserService {
 			
 		}
 	}
-	public boolean belogin() {
-		loginId = "belogin";
-		loginPw = "belogin";
-		return true;
+	public UserDTO belogin() {
+		userDTO.setRole("belogin");
+		userDTO.setId("belogin");
+		return userDTO;
+	}
+	public UserDTO adminUser() {
+		userDTO.setRole("admin");
+		userDTO.setId("admin");
+		return userDTO;
 	}
 	public boolean admin() {
 		System.out.print("관리자 계정 ID");
 		String adminId = sc.next();
-		System.out.println("관리자 계정 Password");
+		System.out.print("관리자 계정 Password");
 		String adminPassword = sc.next();
 		if(userRepository.admin(adminId,adminPassword)) {
 			System.out.println("관리자 계정 로그인 완료");
@@ -102,4 +111,37 @@ public class UserService {
 			return false;
 		}
 	}
+	public void findMyId() {
+		userDTO = userRepository.findByUserDTO(loginId, loginPw);
+		System.out.print("수정할 ID");
+		userDTO.setId(sc.next());
+		System.out.print("수정할 Password");
+		userDTO.setPw(sc.next());
+		System.out.print("수정할 Name");
+		userDTO.setName(sc.next());
+		System.out.println("NickName 수정에는 50포인트가 필요합니다");
+		System.out.println("수정하시겠습니까?");
+		System.out.print("1.예 2.아니오");
+		int menu = sc.nextInt();
+		if(menu == 1) {
+		if(userDTO.getPoint() >= 50) {
+			userDTO.setPoint(userDTO.getPoint()-50);
+			System.out.print("NickName 입력");
+			userDTO.setNickName(sc.next());
+			System.out.println("NickName 수정완료");
+		}else {
+			System.out.println("Point가 부족합니다");
+			return;
+		}
+		
+		}else if(menu == 2) {
+			System.out.println("개인정보 수정 완료");
+			return;
+		}else {
+			System.out.println("다시입력");
+		}
+		
+		
+	}
+
 }

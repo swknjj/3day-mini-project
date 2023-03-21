@@ -8,14 +8,48 @@ public class UserDTO {
 	private String pw;
 	private String name;
 	private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
-	private String Date;
 	private String bno;
-	private static Long number = 100L;
+	private static Long number = 96L;
+	private String nickName;
+	private Long point = 0L;
 	private String newDate;
+	private String role;
 	
+
+	@Override
+	public String toString() {
+		return "UserDTO [id=" + id + ", pw=" + pw + ", NickName=" + nickName + ", bno=" + bno + ", nickName=" + nickName
+				+ ", point=" + point + ", newDate=" + newDate + "]";
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public Long getPoint() {
+		return point;
+	}
+
+	public void setPoint(Long point) {
+		this.point = point;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	public UserDTO() {
 		this.bno = "U"+number++;
 		this.newDate = DTF.format(LocalDateTime.now());
+		
 	}
 	
 	public String getBno() {
@@ -39,8 +73,9 @@ public class UserDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDate() {
-		return Date;
+
+	public String getNewDate() {
+		return newDate;
 	}
-	
+
 }

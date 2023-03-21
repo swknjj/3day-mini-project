@@ -6,29 +6,29 @@ import java.time.format.DateTimeFormatter;
 public class BoardDTO {
 	private String title;
 	private String writer;
-	private static int number;
+	private static Long number = 100L;
 	private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
-	private String name;
 	private long cnt;
 	private String bno;
 	private String postDate;
-	private long point;
+	private String body;
 
 	public String getBno() {
 		return bno;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	public BoardDTO () {
 			this.bno = "B"+number++;
 			this.postDate = DTF.format(LocalDateTime.now());
 			this.cnt = 0;
-			this.point = 0;
-			
-	}
-
-
-	public long getPoint() {
-		return point;
 	}
 
 	public String getTitle() {
@@ -47,16 +47,13 @@ public class BoardDTO {
 		this.writer = writer;
 	}
 
-	public static int getNumber() {
+	public static Long getNumber() {
 		return number;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	@Override
+	public String toString() {
+		return bno+"\t"+title+"\t"+writer+"\t"+cnt+"\t"+body+"\t"+postDate; 
 	}
 
 	public Long getCnt() {
