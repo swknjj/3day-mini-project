@@ -70,6 +70,7 @@ public class BoardService {
 		String openBno = sc.next();
 		List<BoardDTO> openList = new ArrayList<>();
 		openList = boardRepository.open(openBno);
+		System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
 		for(BoardDTO open : openList) {
 			System.out.println(open.toString());
 		}

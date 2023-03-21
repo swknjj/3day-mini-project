@@ -15,10 +15,10 @@ public class BoardRepository {
 	BoardService boardService = BoardService.getInstance();
 	UserDTO userDTO = new UserDTO();
 	Map<String, BoardDTO> bMap = new HashMap<>(); // 글이 모일 맵, key = bno value=boardDTO
-	List<BoardDTO> bList = new ArrayList<>();
+	List<BoardDTO> bList = new ArrayList<>();// 공지글을 제외한 모든글
 	Map<UserDTO, Long> pointMap = new HashMap<>(); // 유저마다 포인트 쌓일 맵 key = userDTO value = point
 	Map<String, BoardDTO> adminMap = new HashMap<>();// 공지글
-	List<BoardDTO> openList = new ArrayList<>();
+	List<BoardDTO> openList = new ArrayList<>();// 검색될 리스트
 
 	public void point5(UserDTO userDTO, Long point) {
 		userDTO.setPoint(point + 5);
@@ -49,6 +49,8 @@ public class BoardRepository {
 			if(openBno.equals(adminMap.get(key).getBno())) {
 				openList.add(adminMap.get(key));
 			}
+		}
+		for(String key : bMap.keySet()) {
 			if(openBno.equals(bMap.get(key).getBno())) {
 				openList.add(bMap.get(key));
 			}

@@ -131,6 +131,7 @@ public class UserService {
 			System.out.println("NickName 수정완료");
 		}else {
 			System.out.println("Point가 부족합니다");
+			System.out.println("수정완료");
 			return;
 		}
 		
