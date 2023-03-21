@@ -13,7 +13,7 @@ public class BoardMain {
 		String loginpw = null;
 		String loginNickName = null;
 		boolean admin = false;
-		UserDTO userDTO = new UserDTO();
+		UserDTO userDTO = null;
 
 		while (true) {
 			System.out.println("==============================게시판=======================================");
@@ -24,18 +24,18 @@ public class BoardMain {
 				if (admin) {
 					System.out.println("관리자 계정으로 접속중");
 					System.out.println("1.공지 작성 2.글 목록 3.글 상세보기 4.글 수정 5.유저리스트 6.유저삭제 0.로그아웃");
-				} else if (loginid == "belogin") {
+				} else if (userDTO.getRole() == "belogin") {
 					System.out.println("비회원으로 접속중");
 					System.out.println("1.글 작성 2.글 목록 3.글 상세보기 0.로그아웃");
 				} else {
-					System.out.println("1.글 작성 2.글 목록 ? 3.글 상세보기 4.Id,Password,Name 수정 5.NickName 수정 ? 0.로그아웃");
+					System.out.println("1.글 작성 2.글 목록 3.글 상세보기 4.Id,Password,Name 수정 5.NickName 수정 0.로그아웃");
 					System.out.println("현재 Login ID :" + loginid + "\n현재 Password :" + loginpw + "\n현재 NickName :"
 							+ loginNickName + "\n현재 Point = " + userDTO.getPoint());
 				}
 
 			}
 			System.out.print("Menu 선택>");
-			int menu = sc.nextInt();
+			int menu = boardService.numberCheck();
 			if (menu == 1) {
 				if (loginOk || admin) { // 로그인시 or admin이면
 					boardService.user(userDTO); // user return
@@ -59,16 +59,23 @@ public class BoardMain {
 				if (loginOk || admin) {
 					boardService.open(); // 검색
 				} else {
-					userService.findMyId();// id찾기
+					userService.findId();// id찾기
 				}
 			} else if (menu == 4) {
+				if(loginid == "belogin") {
+					System.out.println("다시 입력");
+					continue;
+				}
 				if (admin) {
 					boardService.adminUpdate();
-
 				} else {
 					userService.findByPassword(); // pw찾기
 				}
 			} else if (menu == 5) {
+				if(loginid == "belogin") {
+					System.out.println("다시 입력");
+					continue;
+				}
 				if (admin) {
 					userService.findAll();
 				} else if (loginOk) {
@@ -78,10 +85,15 @@ public class BoardMain {
 					loginpw = "belogin";
 					loginNickName = "belogin";
 					userDTO = userService.belogin(); // 비로그인으로 로그인
+					System.out.println(userDTO.getRole());
 					loginOk = true;
 				}
 
 			} else if (menu == 6) {
+				if(loginid == "belogin") {
+					System.out.println("다시 입력");
+					continue;
+				}
 				if(admin) {
 					userService.delete();
 				}else {

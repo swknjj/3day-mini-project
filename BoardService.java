@@ -16,7 +16,7 @@ public class BoardService {
 
 	BoardRepository boardRepository = BoardRepository.getInstance();
 	UserDTO user = new UserDTO();
-	BoardDTO boardDTO = new BoardDTO();
+	BoardDTO boardDTO = null;
 	Map<UserDTO, String> adminMap = new HashMap<>();
 	String admin = "admin";
 	String belogin = "belogin";
@@ -68,6 +68,7 @@ public class BoardService {
 			System.out.println("글이 없습니다");
 		} else {
 			System.out.println("==============================글 목록=======================================");
+			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
 			for (String key : keySet2) {
 				System.out.println(bMap.get(key).toString());
 			}
@@ -77,13 +78,21 @@ public class BoardService {
 
 	public void open() {
 		System.out.println("1.공지글 2.일반글");
-		int menu = sc.nextInt();
+		int menu = boardService.numberCheck();
 		System.out.print("조회할 글 번호 입력");
 		String openBno = sc.next();
 		if (menu == 1) {
 			boardDTO = boardRepository.adminopen(openBno);
+			if (boardDTO == null) {
+				System.out.println("조회오류");
+				return;
+			}
 		} else if (menu == 2) {
 			boardDTO = boardRepository.open(openBno);
+			if (boardDTO == null) {
+				System.out.println("조회오류");
+				return;
+			}
 		}
 		boardDTO.setCnt(boardDTO.getCnt() + 1);
 		System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
@@ -92,7 +101,7 @@ public class BoardService {
 
 	public void adminUpdate() {
 		System.out.println("1.공지글 수정 2.일반글 수정 0.종료");
-		int menu = sc.nextInt();
+		int menu = boardService.numberCheck();
 		if (menu == 1) {
 			System.out.print("수정할 글번호 입력");
 			String update = sc.next();
@@ -115,5 +124,16 @@ public class BoardService {
 			System.out.println("다시입력");
 		}
 	}
-
+	public int numberCheck() {
+		int result;
+		while(true) {
+			if(sc.hasNextInt()) {
+				result = sc.nextInt();
+				break;
+			}else {
+				System.out.println("숫자만 입력하세요");
+				sc.nextLine();
+			}
+		}return result;
+	}
 }

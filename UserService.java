@@ -15,6 +15,7 @@ public class UserService {
 	}
 
 	UserRepository userRepository = UserRepository.getInstance();
+	BoardService boardService = BoardService.getInstance();
 	String loginId = null;
 	String loginPw = null;
 	String loginNickName = null;
@@ -58,7 +59,7 @@ public class UserService {
 
 	}
 
-	public void findById() {
+	public void findId() {
 		System.out.print("찾으시는 ID에 해당하는 Name 입력");
 		String findName = sc.next();
 		userDTO = userRepository.findByUserId(findName);
@@ -118,42 +119,11 @@ public class UserService {
 		}
 	}
 
-	public void findMyId() {
-		userDTO = userRepository.findByUserDTO(loginId, loginPw);
-		System.out.print("수정할 ID");
-		userDTO.setId(sc.next());
-		System.out.print("수정할 Password");
-		userDTO.setPw(sc.next());
-		System.out.print("수정할 Name");
-		userDTO.setName(sc.next());
-		System.out.println("NickName 수정에는 50포인트가 필요합니다");
-		System.out.println("수정하시겠습니까?");
-		System.out.print("1.예 2.아니오");
-		int menu = sc.nextInt();
-		if (menu == 1) {
-			if (userDTO.getPoint() >= 50) {
-				userDTO.setPoint(userDTO.getPoint() - 50);
-				System.out.print("NickName 입력");
-				userDTO.setNickName(sc.next());
-				System.out.println("NickName 수정완료");
-			} else {
-				System.out.println("Point가 부족합니다");
-				System.out.println("수정완료");
-				return;
-			}
-
-		} else if (menu == 2) {
-			System.out.println("개인정보 수정 완료");
-			return;
-		} else {
-			System.out.println("다시입력");
-		}
-	}
 	public void changeNickName() {
 		System.out.println("NickName 수정에는 50포인트가 필요합니다");
 		System.out.println("수정하시겠습니까?");
 		System.out.print("1.예 2.아니오");
-		int menu = sc.nextInt();
+		int menu = boardService.numberCheck();
 		if(menu == 1) {
 		if(userDTO.getPoint() >= 50) {
 			userDTO.setPoint(userDTO.getPoint()-50);
@@ -193,4 +163,5 @@ public class UserService {
 			System.out.println("삭제 실패");
 		}
 	}
+
 }

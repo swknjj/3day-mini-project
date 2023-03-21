@@ -19,8 +19,8 @@ public class UserRepository {
 	List<UserDTO> uList = new ArrayList<>();
 
 	public boolean save(UserDTO userDTO) {
-		uMap.put(userDTO.getBno(),userDTO);
-			return true;
+		uMap.put(userDTO.getBno(), userDTO);
+		return true;
 	}
 
 	public UserDTO findByUserDTO(String loginID, String loginPassword) {
@@ -54,18 +54,21 @@ public class UserRepository {
 		userDTO.setPw(updatePassword);
 		return true;
 	}
-	public boolean admin(String adminId , String adminPassword) {
-		if(adminI.equals(adminId) && adminP.equals(adminPassword)) {
+
+	public boolean admin(String adminId, String adminPassword) {
+		if (adminI.equals(adminId) && adminP.equals(adminPassword)) {
 			return true;
 		}
 		return false;
 	}
+
 	public Map<String, UserDTO> findAll() {
 		return uMap;
 	}
+
 	public boolean delete(String deleteUser) {
-		for(String key : uMap.keySet()) {
-			if(deleteUser.equals(uMap.get(key).getBno())) {
+		for (String key : uMap.keySet()) {
+			if (deleteUser.equals(uMap.get(key).getBno())) {
 				uMap.remove(key);
 				return true;
 			}

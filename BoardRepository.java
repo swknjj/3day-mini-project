@@ -15,7 +15,7 @@ public class BoardRepository {
 	Scanner sc = new Scanner(System.in);
 	BoardService boardService = BoardService.getInstance();
 	UserDTO userDTO = new UserDTO();
-	BoardDTO boardDTO = new BoardDTO();
+
 	Map<String, BoardDTO> bMap = new HashMap<>(); // 글이 모일 맵, key = bno value=boardDTO
 	List<BoardDTO> bList = new ArrayList<>();// 공지글을 제외한 모든글
 	Map<UserDTO, Long> pointMap = new HashMap<>(); // 유저마다 포인트 쌓일 맵 key = userDTO value = point
@@ -46,23 +46,23 @@ public class BoardRepository {
 	}
 
 	public BoardDTO adminopen(String openBno) {
-		
 		for (String key : adminMap.keySet()) {
 			if (openBno.equals(adminMap.get(key).getBno())) {
-				boardDTO = adminMap.get(key);
-				
+				return adminMap.get(key);
+
 			}
 		}
-		return boardDTO;
+		return null;
 	}
+
 	public BoardDTO open(String openBno) {
 		for (String key : bMap.keySet()) {
 			if (openBno.equals(bMap.get(key).getBno())) {
-				boardDTO = bMap.get(key);
-				
+				return bMap.get(key);
+
 			}
 		}
-		return boardDTO;
+		return null;
 
 	}
 
@@ -75,7 +75,8 @@ public class BoardRepository {
 				adminMap.get(key).setBody(sc.next());
 				return true;
 			}
-		}return false;
+		}
+		return false;
 	}
 
 	public boolean update(String bno) {
@@ -87,6 +88,7 @@ public class BoardRepository {
 				adminMap.get(key).setBody(sc.next());
 				return true;
 			}
-		}return false;
+		}
+		return false;
 	}
 }
