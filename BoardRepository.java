@@ -15,11 +15,13 @@ public class BoardRepository {
 	Scanner sc = new Scanner(System.in);
 	BoardService boardService = BoardService.getInstance();
 	UserDTO userDTO = new UserDTO();
+	private static int declarartionstatus = 0;
 
 	Map<String, BoardDTO> bMap = new HashMap<>(); // 글이 모일 맵, key = bno value=boardDTO
 	List<BoardDTO> bList = new ArrayList<>();// 공지글을 제외한 모든글
 	Map<UserDTO, Long> pointMap = new HashMap<>(); // 유저마다 포인트 쌓일 맵 key = userDTO value = point
 	Map<String, BoardDTO> adminMap = new HashMap<>();// 공지글
+	Map<String, BoardDTO> searchMap = new HashMap<>(); // 검색글
 
 	public void point5(UserDTO userDTO, Long point) {
 		userDTO.setPoint(point + 5);
@@ -48,6 +50,7 @@ public class BoardRepository {
 	public BoardDTO adminopen(String openBno) {
 		for (String key : adminMap.keySet()) {
 			if (openBno.equals(adminMap.get(key).getBno())) {
+				adminMap.get(key).setCnt(adminMap.get(key).getCnt() + 1);
 				return adminMap.get(key);
 
 			}
@@ -58,8 +61,8 @@ public class BoardRepository {
 	public BoardDTO open(String openBno) {
 		for (String key : bMap.keySet()) {
 			if (openBno.equals(bMap.get(key).getBno())) {
+				bMap.get(key).setCnt(bMap.get(key).getCnt() + 1);
 				return bMap.get(key);
-
 			}
 		}
 		return null;
@@ -90,5 +93,30 @@ public class BoardRepository {
 			}
 		}
 		return false;
+	}
+
+	public int declaration(String Declarationbno, UserDTO user) {
+		for (String key : bMap.keySet()) {
+			if (Declarationbno.equals(bMap.get(key).getBno())) {
+				user.setDec(1);
+				bMap.get(key).setDeclaration(bMap.get(key).getDeclaration() + 1);
+				if (bMap.get(key).getDeclaration() == 2) {
+					bMap.remove(key);
+				}
+				if (bMap.containsKey(Declarationbno)) {
+					return 2;
+				}
+				return 1;
+			}
+		}
+		return 3;
+	}
+	public Map<String,BoardDTO> search(String search) {
+		for(String key : bMap.keySet()) {
+			if(search.equals(bMap.get(key).getWriter())) {
+				searchMap.put(bMap.get(key).getWriter(), bMap.get(key));
+			}
+		}
+		return searchMap;
 	}
 }

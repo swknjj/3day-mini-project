@@ -9,16 +9,16 @@ public class UserDTO {
 	private String name;
 	private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
 	private String bno;
-	private static Long number = 96L;
+	private static Long number = 97L;
 	private String nickName;
 	private Long point = 0L;
 	private String newDate;
 	private String role;
-	
+	private int dec = 0;
 
 	@Override
 	public String toString() {
-		return bno+"\t"+id+"\t"+pw+"\t"+name+"\t"+nickName+"\t"+newDate;
+		return bno + "\t" + id + "\t" + pw + "\t\t" + name + "\t" + nickName + "\t\t" + newDate;
 	}
 
 	public String getRole() {
@@ -46,35 +46,49 @@ public class UserDTO {
 	}
 
 	public UserDTO() {
-		this.bno = "U"+number++;
+		this.bno = "U" + number++;
 		this.newDate = DTF.format(LocalDateTime.now());
-		
+
 	}
-	
+
 	public String getBno() {
 		return bno;
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getPw() {
 		return pw;
 	}
+
 	public void setPw(String pw) {
 		this.pw = pw;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public String getNewDate() {
 		return newDate;
+	}
+
+	public int getDec() {
+		return dec;
+	}
+
+	public void setDec(int dec) {
+		this.dec = dec;
 	}
 
 }

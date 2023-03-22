@@ -23,14 +23,30 @@ public class UserService {
 
 	public void save() { // 회원가입
 		UserDTO userDTO = new UserDTO();
-		System.out.print("회원가입할 ID");
-		userDTO.setId(sc.next());
+		while (true) {
+			System.out.print("회원가입할 ID");
+			String id = userRepository.duCheck();
+			if (id == null) {
+				System.out.println("중복된 ID가 있습니다");
+			} else {
+				userDTO.setId(id);
+				break;
+			}
+		}
 		System.out.print("회원가입할 Password");
 		userDTO.setPw(sc.next());
 		System.out.print("회원가입할 Name");
 		userDTO.setName(sc.next());
-		System.out.print("회원가입할 NickName");
-		userDTO.setNickName(sc.next());
+		while (true) {
+			System.out.print("회원가입할 NickName 입력");
+			String du = userRepository.duCheck();
+			if (du == null) {
+				System.out.println("중복된 NickName이 있습니다");
+			} else {
+				userDTO.setNickName(du);
+				break;
+			}
+		}
 		if (userRepository.save(userDTO)) {
 			System.out.println("회원가입 성공");
 			System.out.println(userDTO.getName() + "님 회원가입을 축하합니다");
@@ -52,7 +68,6 @@ public class UserService {
 			loginId = loginID;
 			loginPw = loginPassword;
 			loginNickName = userDTO.getNickName();
-
 			System.out.println("login 성공");
 			return userDTO;
 		}
@@ -102,6 +117,9 @@ public class UserService {
 	public UserDTO adminUser() {
 		userDTO.setRole("admin");
 		userDTO.setId("admin");
+		userDTO.setName("admin");
+		userDTO.setNickName("admin");
+		userDTO.setPw("admin");
 		return userDTO;
 	}
 
@@ -124,42 +142,50 @@ public class UserService {
 		System.out.println("수정하시겠습니까?");
 		System.out.print("1.예 2.아니오");
 		int menu = boardService.numberCheck();
-		if(menu == 1) {
-		if(userDTO.getPoint() >= 50) {
-			userDTO.setPoint(userDTO.getPoint()-50);
-			System.out.print("NickName 입력");
-			userDTO.setNickName(sc.next());
-			System.out.println("NickName 수정완료");
-			return;
-		}else {
-			System.out.println("Point가 부족합니다");
-			return;
-		}
-		}else if(menu == 2) {
+		if (menu == 1) {
+			if (userDTO.getPoint() >= 50) {
+				userDTO.setPoint(userDTO.getPoint() - 50);
+				System.out.print("NickName 입력");
+				String next = sc.next();
+				if (userRepository.changeNickName(userDTO, next)) {
+					System.out.println("수정완료");
+				} else {
+					System.out.println("닉네임 중복");
+				}
+				return;
+			} else {
+				System.out.println("Point가 부족합니다");
+				return;
+			}
+		} else if (menu == 2) {
 			System.out.println("수정 종료");
 			return;
-		}else {
+		} else {
 			System.out.println("다시입력");
 		}
 	}
+
 	public void findAll() {
 		System.out.println("유저 목록");
-		Map<String,UserDTO> uMap = userRepository.findAll();
-		if(uMap.size() == 0) {
+		Map<String, UserDTO> uMap = userRepository.findAll();
+		List<String> keySet = new ArrayList<>(uMap.keySet());
+		Collections.sort(keySet);
+		if (uMap.size() == 0) {
 			System.out.println("조회할 수 없습니다");
-		}else {
+		} else {
 			System.out.println("유저번호\tId\tPassword\tName\tNickName\t가입날짜");
-		for(String key : uMap.keySet()) {
-			System.out.println(uMap.get(key).toString());
-		}
+			for (String key : keySet) {
+				System.out.println(uMap.get(key).toString());
+			}
 		}
 	}
+
 	public void delete() {
 		System.out.println("삭제할 유저번호 입력");
 		String deleteUser = sc.next();
-		if(userRepository.delete(deleteUser)) {
+		if (userRepository.delete(deleteUser)) {
 			System.out.println("삭제 성공");
-		}else {
+		} else {
 			System.out.println("삭제 실패");
 		}
 	}

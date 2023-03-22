@@ -12,7 +12,7 @@ public class BoardDTO {
 	private String bno;
 	private String postDate;
 	private String body;
-
+	private long declaration;
 	public String getBno() {
 		return bno;
 	}
@@ -29,6 +29,15 @@ public class BoardDTO {
 			this.bno = "B"+number++;
 			this.postDate = DTF.format(LocalDateTime.now());
 			this.cnt = 0;
+			this.declaration = 0L;
+	}
+
+	public long getDeclaration() {
+		return declaration;
+	}
+
+	public void setDeclaration(long declaration) {
+		this.declaration = declaration;
 	}
 
 	public String getTitle() {
