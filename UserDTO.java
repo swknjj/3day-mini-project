@@ -9,7 +9,7 @@ public class UserDTO {
 	private String name;
 	private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
 	private String bno;
-	private static Long number = 97L;
+	private static Long number = 100L;
 	private String nickName;
 	private Long point = 0L;
 	private String newDate;

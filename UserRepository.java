@@ -87,19 +87,29 @@ public class UserRepository {
 		return true;
 	}
 
-	public String duCheck() {
-		String result = sc.next();
+	public String duCheckNickName() {
 		while (true) {
-			boolean find = false;
+			System.out.print("회원가입할 NickName 입력");
+			String result = sc.next();
 			for (String key : uMap.keySet()) {
 				if (result.equals(uMap.get(key).getNickName())) {
 					return null;
 				}
-				if (!find) {
-					break;
-				}
-			}
-			return result;
+			}return result;
 		}
+		
 	}
-}
+	public String duCheckId() {
+		while (true) {
+			System.out.print("회원가입할 ID 입력");
+			String result = sc.next();
+			for (String key : uMap.keySet()) {
+				if (result.equals(uMap.get(key).getId())) {
+					return null;
+				}
+			}return result;
+		}
+		
+	}
+	}
+

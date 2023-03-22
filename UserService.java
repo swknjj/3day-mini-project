@@ -24,12 +24,11 @@ public class UserService {
 	public void save() { // 회원가입
 		UserDTO userDTO = new UserDTO();
 		while (true) {
-			System.out.print("회원가입할 ID");
-			String id = userRepository.duCheck();
-			if (id == null) {
-				System.out.println("중복된 ID가 있습니다");
+			String result = userRepository.duCheckId();
+			if (result == null) {
+				System.out.println("중복된 ID입니다");
 			} else {
-				userDTO.setId(id);
+				userDTO.setId(result);
 				break;
 			}
 		}
@@ -38,12 +37,11 @@ public class UserService {
 		System.out.print("회원가입할 Name");
 		userDTO.setName(sc.next());
 		while (true) {
-			System.out.print("회원가입할 NickName 입력");
-			String du = userRepository.duCheck();
-			if (du == null) {
-				System.out.println("중복된 NickName이 있습니다");
+			String result = userRepository.duCheckNickName();
+			if (result == null) {
+				System.out.println("중복된 NickName입니다");
 			} else {
-				userDTO.setNickName(du);
+				userDTO.setNickName(result);
 				break;
 			}
 		}
@@ -115,6 +113,7 @@ public class UserService {
 	}
 
 	public UserDTO adminUser() {
+		UserDTO userDTO = new UserDTO();
 		userDTO.setRole("admin");
 		userDTO.setId("admin");
 		userDTO.setName("admin");

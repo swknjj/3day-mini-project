@@ -74,7 +74,7 @@ public class BoardRepository {
 			if (bno.equals(adminMap.get(key).getBno())) {
 				System.out.print("수정할 제목");
 				adminMap.get(key).setTitle(sc.next());
-				System.out.println("수정할 내용");
+				System.out.print("수정할 내용");
 				adminMap.get(key).setBody(sc.next());
 				return true;
 			}
@@ -86,9 +86,11 @@ public class BoardRepository {
 		for (String key : bMap.keySet()) {
 			if (bno.equals(bMap.get(key).getBno())) {
 				System.out.print("수정할 제목");
-				adminMap.get(key).setTitle(sc.next());
-				System.out.println("수정할 내용");
-				adminMap.get(key).setBody(sc.next());
+				String title = sc.next();
+				bMap.get(key).setTitle(title);
+				System.out.print("수정할 내용");
+				String body = sc.next();
+				bMap.get(key).setBody(body);
 				return true;
 			}
 		}
@@ -112,11 +114,31 @@ public class BoardRepository {
 		return 3;
 	}
 	public Map<String,BoardDTO> search(String search) {
+		Map<String,BoardDTO> ss = new HashMap<>();
 		for(String key : bMap.keySet()) {
 			if(search.equals(bMap.get(key).getWriter())) {
-				searchMap.put(bMap.get(key).getWriter(), bMap.get(key));
+				ss.put(bMap.get(key).getBno(),bMap.get(key));
 			}
 		}
-		return searchMap;
+		return ss;
 	}
+	public boolean adminDelete(String deleteBno) {
+		for(String key : adminMap.keySet()) {
+			if(deleteBno.equals(adminMap.get(key).getBno())) {
+				adminMap.remove(key);
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean Delete(String deleteBno) {
+		for(String key : bMap.keySet()) {
+			if(deleteBno.equals(bMap.get(key).getBno())) {
+				bMap.remove(key);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

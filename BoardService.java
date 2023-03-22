@@ -47,10 +47,12 @@ public class BoardService {
 			System.out.println("포인트 5 누적");
 		}
 	}
+
 	public void getDTO(UserDTO userDTO) {
 		user = userDTO;
 		return;
 	}
+
 	public void findAll() {
 		Map<String, BoardDTO> adminMap = boardRepository.findAllAdmin();
 		Map<String, BoardDTO> bMap = boardRepository.findAll();
@@ -82,20 +84,25 @@ public class BoardService {
 	public void open() {
 		System.out.println("1.공지글 2.일반글");
 		int menu = boardService.numberCheck();
-		System.out.print("조회할 글 번호 입력");
-		String openBno = sc.next();
 		if (menu == 1) {
+			System.out.print("조회할 글 번호 입력");
+			String openBno = sc.next();
 			boardDTO = boardRepository.adminopen(openBno);
 			if (boardDTO == null) {
 				System.out.println("조회오류");
 				return;
 			}
 		} else if (menu == 2) {
+			System.out.print("조회할 글 번호 입력");
+			String openBno = sc.next();
 			boardDTO = boardRepository.open(openBno);
 			if (boardDTO == null) {
 				System.out.println("조회오류");
 				return;
 			}
+		} else {
+			System.out.println("조회오류");
+			return;
 		}
 		System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
 		System.out.println(boardDTO.toString());
@@ -121,6 +128,9 @@ public class BoardService {
 			} else {
 				System.out.println("입력한 글번호가 없습니다");
 			}
+			return;
+		} else if (menu == 0) {
+			System.out.println("종료");
 			return;
 		} else {
 			System.out.println("다시입력");
@@ -165,15 +175,43 @@ public class BoardService {
 		Map<String, BoardDTO> searchMap = boardRepository.search(search);
 		List<String> keySet = new ArrayList<>(searchMap.keySet());
 		Collections.sort(keySet);
-		if (keySet.size() == 0) {
+		if (searchMap.size() == 0) {
 			System.out.println("검색된 작성자의 글이 없습니다");
 		} else {
 			System.out.println("==============================검색글=======================================");
 			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
 			for (String key : keySet) {
 				System.out.println(searchMap.get(key).toString());
+
 			}
 		}
-
+	}
+	public void delete() {
+		while(true) {
+		System.out.println("삭제할 곳");
+		System.out.println("1.공지글 2.일반글 3.뒤로가기");
+		int menu = boardService.numberCheck();
+		if(menu == 1) {
+			System.out.print("삭제할 글번호 입력");
+			String deleteBno = sc.next();
+			if(boardRepository.adminDelete(deleteBno)) {
+				System.out.println("삭제 완료");
+			}else {
+				System.out.println("삭제 실패");
+			}
+		}else if(menu == 2) {
+			System.out.print("삭제할 글번호 입력");
+			String deleteBno = sc.next();
+			if(boardRepository.Delete(deleteBno)) {
+				System.out.println("삭제 완료");
+			}else {
+				System.out.println("삭제 실패");
+			}
+		}else if(menu == 3){
+			break;
+		}else {
+			System.out.println("다시입력");
+		}
+	}
 	}
 }

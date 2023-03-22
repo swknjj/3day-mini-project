@@ -113,12 +113,10 @@ public class BoardMain {
 				}
 				
 			}else if(menu == 7) {
-				if(loginOk) {
+				if(admin) {
+					boardService.delete();
+				} else if(loginOk) {
 					boardService.search();
-				}
-				else if(!admin) {
-					System.out.println("다시입력");
-					continue;
 				}
 			}
 			else if (menu == 0) {
