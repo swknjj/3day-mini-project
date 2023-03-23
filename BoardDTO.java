@@ -13,15 +13,16 @@ public class BoardDTO {
 	private String postDate;
 	private String body;
 	private long declaration;
-	private int like = 0;
-	private int unLike = 0;
+	private Integer like = 0;
+	private Integer unLike = 0;
 	
 	
-	public int getUnLike() {
+	public Integer getUnLike() {
+		
 		return unLike;
 	}
 
-	public void setUnLike(int unLike) {
+	public void setUnLike(Integer unLike) {
 		this.unLike = unLike;
 	}
 
@@ -29,7 +30,7 @@ public class BoardDTO {
 		return like;
 	}
 
-	public void setLike(int like) {
+	public void setLike(Integer like) {
 		this.like = like;
 	}
 

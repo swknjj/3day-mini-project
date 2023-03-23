@@ -106,11 +106,6 @@ public class UserService {
 		}
 	}
 
-	public UserDTO belogin() {
-		userDTO.setRole("belogin");
-		userDTO.setId("belogin");
-		return userDTO;
-	}
 
 	public UserDTO adminUser() {
 		UserDTO userDTO = new UserDTO();
@@ -188,5 +183,7 @@ public class UserService {
 			System.out.println("삭제 실패");
 		}
 	}
-
+	public UserDTO belogin(UserDTO userDTO) {
+		return userDTO;
+	}
 }

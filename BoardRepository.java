@@ -21,7 +21,7 @@ public class BoardRepository {
 	Map<UserDTO, Long> pointMap = new HashMap<>(); // 유저마다 포인트 쌓일 맵 key = userDTO value = point
 	Map<String, BoardDTO> adminMap = new HashMap<>();// 공지글
 	Map<String, BoardDTO> searchMap = new HashMap<>(); // 검색글
-	Map<Integer, BoardDTO> likeMap = new HashMap<>(); // 추천수기준 검색글
+	List<BoardDTO> likeList = new ArrayList<>(); // 추천수기준 검색글
 
 	public void point5(UserDTO userDTO, Long point) {
 		userDTO.setPoint(point + 5);
@@ -35,9 +35,7 @@ public class BoardRepository {
 			return true;
 		} else {
 			bMap.put(bno, boardDTO);
-			likeMap.put(boardDTO.getLike(), boardDTO);
-			System.out.println(likeMap.size());
-			System.out.println(bMap.size());
+			likeList.add(boardDTO);
 			return true;
 		}
 	}
@@ -131,6 +129,11 @@ public class BoardRepository {
 		for (String key : adminMap.keySet()) {
 			if (deleteBno.equals(adminMap.get(key).getBno())) {
 				adminMap.remove(key);
+				for (BoardDTO boardDTO : likeList) {
+					if (deleteBno.equals(boardDTO.getBno())) {
+						likeList.remove(boardDTO);
+					}
+				}
 				return true;
 			}
 		}
@@ -141,7 +144,13 @@ public class BoardRepository {
 		for (String key : bMap.keySet()) {
 			if (deleteBno.equals(bMap.get(key).getBno())) {
 				bMap.remove(key);
-				return true;
+				for (BoardDTO boardDTO : likeList) {
+					if (deleteBno.equals(boardDTO.getBno())) {
+						likeList.remove(boardDTO);
+						return true;
+					}
+				}
+				
 			}
 		}
 		return false;
@@ -176,7 +185,8 @@ public class BoardRepository {
 		}
 		return true;
 	}
-	public Map<Integer, BoardDTO> findLikeMap() {
-		return likeMap;
+
+	public List<BoardDTO> findLikeList() {
+		return likeList;
 	}
 }

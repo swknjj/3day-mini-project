@@ -60,9 +60,7 @@ public class BoardService {
 		Map<String, BoardDTO> bMap = boardRepository.findAll();
 		List<String> keySet2 = new ArrayList<>(bMap.keySet());
 		Collections.sort(keySet2);
-		Map<Integer, BoardDTO> likeMap = boardRepository.findLikeMap();
-		List<Integer> keySet3 = new ArrayList<>(likeMap.keySet());
-		Collections.sort(keySet3);
+		List<BoardDTO> likeList = boardRepository.findLikeList();
 		if (keySet.size() == 0) {
 			System.out.println("공지글이 없습니다");
 		} else {
@@ -72,6 +70,7 @@ public class BoardService {
 				System.out.println(adminMap.get(key).toString());
 			}
 		}
+		System.out.println("=============================================================================");
 		if (keySet2.size() == 0) {
 			System.out.println("글이 없습니다");
 			return;
@@ -85,11 +84,12 @@ public class BoardService {
 		System.out.println("추천 수 정렬하시겠습니까? ( Y / N ) ");
 		String answer = sc.next();
 		if (answer.equals("Y") || answer.equals("y")) {
+			Collections.sort(likeList, new LikeComparator().reversed());
 			System.out.println("==============================글 목록=======================================");
 			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t추천수\t게시일자");
-				for (Integer key : keySet3) {
-					System.out.println(likeMap.get(key).toString());
-				}
+			for (BoardDTO key : likeList) {
+				System.out.println(key);
+			}
 		} else if (answer.equals("N") || answer.equals("n")) {
 			System.out.println("종료");
 			return;
@@ -249,5 +249,20 @@ public class BoardService {
 				System.out.println("다시입력");
 			}
 		}
+	}
+	public UserDTO belogin(UserDTO userDTO) {
+		return userDTO;
+	}
+}
+
+class LikeComparator implements Comparator<BoardDTO> {
+
+	public int compare(BoardDTO board1, BoardDTO board2) {
+		if (board1.getLike() > board2.getLike()) {
+			return 1;
+		} else if (board1.getLike() < board2.getLike()) {
+			return -1;
+		}
+		return 0;
 	}
 }

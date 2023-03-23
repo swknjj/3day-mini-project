@@ -50,6 +50,12 @@ public class UserDTO {
 		this.newDate = DTF.format(LocalDateTime.now());
 
 	}
+	public UserDTO(String id , String pw , String nickname , String role) {
+		this.id = id;
+		this.pw = pw;
+		this.nickName = nickname;
+		this.role = role;
+	}
 
 	public String getBno() {
 		return bno;

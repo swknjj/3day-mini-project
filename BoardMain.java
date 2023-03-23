@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class BoardMain {
 
+	private static final String String = null;
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		UserService userService = UserService.getInstance();
@@ -12,6 +14,7 @@ public class BoardMain {
 		String loginid = null;
 		String loginpw = null;
 		String loginNickName = null;
+		String loginrole = null;
 		boolean admin = false;
 		UserDTO userDTO = null;
 		boolean belogin = false;
@@ -87,8 +90,10 @@ public class BoardMain {
 					loginid = "belogin";
 					loginpw = "belogin";
 					loginNickName = "belogin";
-					userDTO = userService.belogin(); // 비로그인으로 로그인
-					System.out.println(userDTO.getRole());
+					loginrole = "belogin";
+					UserDTO user = new UserDTO(loginid , loginpw , loginNickName , loginrole);
+					userService.belogin(user);
+					boardService.belogin(user);
 					loginOk = true;
 					belogin = true;
 				}
