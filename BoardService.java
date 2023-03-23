@@ -55,30 +55,47 @@ public class BoardService {
 
 	public void findAll() {
 		Map<String, BoardDTO> adminMap = boardRepository.findAllAdmin();
-		Map<String, BoardDTO> bMap = boardRepository.findAll();
 		List<String> keySet = new ArrayList<>(adminMap.keySet());
 		Collections.sort(keySet);
+		Map<String, BoardDTO> bMap = boardRepository.findAll();
 		List<String> keySet2 = new ArrayList<>(bMap.keySet());
 		Collections.sort(keySet2);
+		Map<Integer, BoardDTO> likeMap = boardRepository.findLikeMap();
+		List<Integer> keySet3 = new ArrayList<>(likeMap.keySet());
+		Collections.sort(keySet3);
 		if (keySet.size() == 0) {
 			System.out.println("공지글이 없습니다");
 		} else {
 			System.out.println("==============================공지 글=======================================");
-			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
+			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t추천수\t게시일자");
 			for (String key : keySet) {
 				System.out.println(adminMap.get(key).toString());
 			}
 		}
 		if (keySet2.size() == 0) {
 			System.out.println("글이 없습니다");
+			return;
 		} else {
 			System.out.println("==============================글 목록=======================================");
-			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
+			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t추천수\t게시일자");
 			for (String key : keySet2) {
 				System.out.println(bMap.get(key).toString());
 			}
 		}
-
+		System.out.println("추천 수 정렬하시겠습니까? ( Y / N ) ");
+		String answer = sc.next();
+		if (answer.equals("Y") || answer.equals("y")) {
+			System.out.println("==============================글 목록=======================================");
+			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t추천수\t게시일자");
+				for (Integer key : keySet3) {
+					System.out.println(likeMap.get(key).toString());
+				}
+		} else if (answer.equals("N") || answer.equals("n")) {
+			System.out.println("종료");
+			return;
+		} else {
+			System.out.println("다시입력");
+		}
 	}
 
 	public void open() {
@@ -104,8 +121,27 @@ public class BoardService {
 			System.out.println("조회오류");
 			return;
 		}
-		System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
-		System.out.println(boardDTO.toString());
+		System.out.println(boardDTO.print());
+		System.out.println("추천 수 : " + boardDTO.getLike() + "\n" + "비추천 수 : " + boardDTO.getUnLike());
+		while (true) {
+			System.out.println("1.추천하기 2.비추천하기 3.뒤로가기");
+			menu = boardService.numberCheck();
+			if (menu == 1) {
+				if (boardRepository.like(boardDTO)) {
+					System.out.println("추천성공");
+				}
+				return;
+			} else if (menu == 2) {
+				if (boardRepository.unLike(boardDTO)) {
+					System.out.println("비추천성공");
+				}
+				return;
+			} else if (menu == 3) {
+				return;
+			} else {
+				System.out.println("다시입력");
+			}
+		}
 	}
 
 	public void adminUpdate() {
@@ -182,36 +218,36 @@ public class BoardService {
 			System.out.println("글 번호\t글 제목\t글 작성자\t조회수\t글 내용\t게시일자");
 			for (String key : keySet) {
 				System.out.println(searchMap.get(key).toString());
+			}
+		}
+	}
 
-			}
-		}
-	}
 	public void delete() {
-		while(true) {
-		System.out.println("삭제할 곳");
-		System.out.println("1.공지글 2.일반글 3.뒤로가기");
-		int menu = boardService.numberCheck();
-		if(menu == 1) {
-			System.out.print("삭제할 글번호 입력");
-			String deleteBno = sc.next();
-			if(boardRepository.adminDelete(deleteBno)) {
-				System.out.println("삭제 완료");
-			}else {
-				System.out.println("삭제 실패");
+		while (true) {
+			System.out.println("삭제할 곳");
+			System.out.println("1.공지글 2.일반글 3.뒤로가기");
+			int menu = boardService.numberCheck();
+			if (menu == 1) {
+				System.out.print("삭제할 글번호 입력");
+				String deleteBno = sc.next();
+				if (boardRepository.adminDelete(deleteBno)) {
+					System.out.println("삭제 완료");
+				} else {
+					System.out.println("삭제 실패");
+				}
+			} else if (menu == 2) {
+				System.out.print("삭제할 글번호 입력");
+				String deleteBno = sc.next();
+				if (boardRepository.Delete(deleteBno)) {
+					System.out.println("삭제 완료");
+				} else {
+					System.out.println("삭제 실패");
+				}
+			} else if (menu == 3) {
+				break;
+			} else {
+				System.out.println("다시입력");
 			}
-		}else if(menu == 2) {
-			System.out.print("삭제할 글번호 입력");
-			String deleteBno = sc.next();
-			if(boardRepository.Delete(deleteBno)) {
-				System.out.println("삭제 완료");
-			}else {
-				System.out.println("삭제 실패");
-			}
-		}else if(menu == 3){
-			break;
-		}else {
-			System.out.println("다시입력");
 		}
-	}
 	}
 }

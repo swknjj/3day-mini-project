@@ -13,6 +13,26 @@ public class BoardDTO {
 	private String postDate;
 	private String body;
 	private long declaration;
+	private int like = 0;
+	private int unLike = 0;
+	
+	
+	public int getUnLike() {
+		return unLike;
+	}
+
+	public void setUnLike(int unLike) {
+		this.unLike = unLike;
+	}
+
+	public Integer getLike() {
+		return like;
+	}
+
+	public void setLike(int like) {
+		this.like = like;
+	}
+
 	public String getBno() {
 		return bno;
 	}
@@ -62,9 +82,16 @@ public class BoardDTO {
 
 	@Override
 	public String toString() {
-		return bno+"\t"+title+"\t"+writer+"\t"+cnt+"\t"+body+"\t"+postDate; 
+		return bno+"\t"+title+"\t"+writer+"\t"+cnt+"\t"+body+"\t"+like+"\t"+postDate; 
 	}
-
+	public String print() {
+		return "================================================================================\n\n"
+			+ "글 번호 : " + bno + "\n\n================================================================================\n\n"
+			+ "글 제목 : " + title + "\n\n================================================================================\n\n"
+			+ "글 작성자 : " + writer + "\n\n================================================================================\n\n"
+			+ "글 내용 : " + body + "\n\n================================================================================";
+				
+	}
 	public Long getCnt() {
 		return cnt;
 	}

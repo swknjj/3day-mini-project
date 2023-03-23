@@ -15,13 +15,13 @@ public class BoardRepository {
 	Scanner sc = new Scanner(System.in);
 	BoardService boardService = BoardService.getInstance();
 	UserDTO userDTO = new UserDTO();
-	private static int declarartionstatus = 0;
 
 	Map<String, BoardDTO> bMap = new HashMap<>(); // 글이 모일 맵, key = bno value=boardDTO
 	List<BoardDTO> bList = new ArrayList<>();// 공지글을 제외한 모든글
 	Map<UserDTO, Long> pointMap = new HashMap<>(); // 유저마다 포인트 쌓일 맵 key = userDTO value = point
 	Map<String, BoardDTO> adminMap = new HashMap<>();// 공지글
 	Map<String, BoardDTO> searchMap = new HashMap<>(); // 검색글
+	Map<Integer, BoardDTO> likeMap = new HashMap<>(); // 추천수기준 검색글
 
 	public void point5(UserDTO userDTO, Long point) {
 		userDTO.setPoint(point + 5);
@@ -35,6 +35,9 @@ public class BoardRepository {
 			return true;
 		} else {
 			bMap.put(bno, boardDTO);
+			likeMap.put(boardDTO.getLike(), boardDTO);
+			System.out.println(likeMap.size());
+			System.out.println(bMap.size());
 			return true;
 		}
 	}
@@ -113,32 +116,67 @@ public class BoardRepository {
 		}
 		return 3;
 	}
-	public Map<String,BoardDTO> search(String search) {
-		Map<String,BoardDTO> ss = new HashMap<>();
-		for(String key : bMap.keySet()) {
-			if(search.equals(bMap.get(key).getWriter())) {
-				ss.put(bMap.get(key).getBno(),bMap.get(key));
+
+	public Map<String, BoardDTO> search(String search) {
+		Map<String, BoardDTO> ss = new HashMap<>();
+		for (String key : bMap.keySet()) {
+			if (search.equals(bMap.get(key).getWriter())) {
+				ss.put(bMap.get(key).getBno(), bMap.get(key));
 			}
 		}
 		return ss;
 	}
+
 	public boolean adminDelete(String deleteBno) {
-		for(String key : adminMap.keySet()) {
-			if(deleteBno.equals(adminMap.get(key).getBno())) {
+		for (String key : adminMap.keySet()) {
+			if (deleteBno.equals(adminMap.get(key).getBno())) {
 				adminMap.remove(key);
 				return true;
 			}
 		}
 		return false;
 	}
+
 	public boolean Delete(String deleteBno) {
-		for(String key : bMap.keySet()) {
-			if(deleteBno.equals(bMap.get(key).getBno())) {
+		for (String key : bMap.keySet()) {
+			if (deleteBno.equals(bMap.get(key).getBno())) {
 				bMap.remove(key);
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
+	public boolean like(BoardDTO boardDTO) {
+		if (bMap.containsKey(boardDTO.getBno())) {
+			boardDTO.setLike(boardDTO.getLike() + 1);
+			return true;
+		} else {
+			System.out.println("추천오류");
+		}
+		return false;
+	}
+
+	public boolean unLike(BoardDTO boardDTO) {
+		if (bMap.containsKey(boardDTO.getBno())) {
+			boardDTO.setUnLike(boardDTO.getUnLike() + 1);
+			if (boardDTO.getUnLike() == 3) {
+				for (String key : bMap.keySet()) {
+					if (boardDTO.getBno().equals(bMap.get(key).getBno())) {
+						bMap.remove(key);
+						System.out.println("비추천 수가 3이 넘어 삭제되었습니다");
+					}
+					System.out.println("글이 없습니다");
+					return false;
+				}
+			}
+		} else {
+			System.out.println("오류");
+			return false;
+		}
+		return true;
+	}
+	public Map<Integer, BoardDTO> findLikeMap() {
+		return likeMap;
+	}
 }
