@@ -81,6 +81,7 @@ public class BoardService {
 				System.out.println(bMap.get(key).toString());
 			}
 		}
+		while(true) {
 		System.out.println("추천 수 정렬하시겠습니까? ( Y / N ) ");
 		String answer = sc.next();
 		if (answer.equals("Y") || answer.equals("y")) {
@@ -90,6 +91,7 @@ public class BoardService {
 			for (BoardDTO key : likeList) {
 				System.out.println(key);
 			}
+			return;
 		} else if (answer.equals("N") || answer.equals("n")) {
 			System.out.println("종료");
 			return;
@@ -97,7 +99,8 @@ public class BoardService {
 			System.out.println("다시입력");
 		}
 	}
-
+	}
+	
 	public void open() {
 		System.out.println("1.공지글 2.일반글");
 		int menu = boardService.numberCheck();

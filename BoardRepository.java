@@ -15,9 +15,7 @@ public class BoardRepository {
 	Scanner sc = new Scanner(System.in);
 	BoardService boardService = BoardService.getInstance();
 	UserDTO userDTO = new UserDTO();
-
 	Map<String, BoardDTO> bMap = new HashMap<>(); // 글이 모일 맵, key = bno value=boardDTO
-	List<BoardDTO> bList = new ArrayList<>();// 공지글을 제외한 모든글
 	Map<UserDTO, Long> pointMap = new HashMap<>(); // 유저마다 포인트 쌓일 맵 key = userDTO value = point
 	Map<String, BoardDTO> adminMap = new HashMap<>();// 공지글
 	Map<String, BoardDTO> searchMap = new HashMap<>(); // 검색글
